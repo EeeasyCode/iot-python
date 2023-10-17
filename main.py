@@ -2,46 +2,56 @@ import time
 import tkinter
 import tkinter.font
 from tkinter import *
+import RPi.GPIO as GPIO
 
-# import RPi.GPIO as GPIO
-
-# GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
 led_red_pin = 16
 led_green_pin = 20
 led_blue_pin = 21
 
+led_red_pwm_pin = 26
+led_green_pwm_pin = 19
+led_blue_pwm_pin = 13
 
-# GPIO.setup(led_red_pin, GPIO.OUT)
-# GPIO.setup(led_green_pin, GPIO.OUT)
-# GPIO.setup(led_blue_pin, GPIO.OUT)
+GPIO.setup(led_red_pin, GPIO.OUT)
+GPIO.setup(led_green_pin, GPIO.OUT)
+GPIO.setup(led_blue_pin, GPIO.OUT)
+GPIO.setup(led_red_pwm_pin, GPIO.OUT)
+GPIO.setup(led_green_pwm_pin, GPIO.OUT)
+GPIO.setup(led_blue_pwm_pin, GPIO.OUT)
 
-# pwmRed = GPIO.PWM(led_red_pin, 500)
-# pwmRed.start(100)
-# pwmGreen = GPIO.PWM(led_green_pin, 500)
-# pwmGreen.start(100)
-# pwmBlue = GPIO.PWM(led_blue_pin, 500)
-# pwmBlue.start(100)
+pwmRed = GPIO.PWM(led_red_pwm_pin, 500)
+pwmGreen = GPIO.PWM(led_green_pwm_pin, 500)
+pwmBlue = GPIO.PWM(led_blue_pwm_pin, 500)
+
 
 class WidgetDemo:
     def __init__(self):
         def led_pwm_window():
+            def set_pwm():
+                print("set")
+                pwmRed.start(0)
+                pwmGreen.start(0)
+                pwmBlue.start(0)
+
             def updateRed(duty):
-                # pwmRed.ChangeDutyCycle(float(duty))
+                pwmRed.ChangeDutyCycle(float(duty))
                 print(float(duty))
 
             def updateGreen(duty):
-                # pwmGreen.ChangeDutyCycle(float(duty))
+                pwmGreen.ChangeDutyCycle(float(duty))
                 print(float(duty))
 
             def updateBlue(duty):
-                # pwmBlue.ChangeDutyCycle(float(duty))
+                pwmBlue.ChangeDutyCycle(float(duty))
                 print(float(duty))
 
             if self.ledControl.get() == "M":
                 newWindow = Toplevel(window)
                 frame1 = Frame(newWindow)
                 frame1.pack()
+                set_pwm()
                 Label(frame1, text='Red').grid(row=0, column=0)
                 Label(frame1, text='Green').grid(row=1, column=0)
                 Label(frame1, text='Blue').grid(row=2, column=0)
@@ -57,33 +67,26 @@ class WidgetDemo:
 
             elif self.ledControl.get() == "X":
                 print("X")
-                # GPIO.output(led_red_pin, False)
-                # GPIO.output(led_green_pin, False)
-                # GPIO.output(led_blue_pin, False)
+                GPIO.output(led_red_pin, False)
+                GPIO.output(led_green_pin, False)
+                GPIO.output(led_blue_pin, False)
                 self.red_led_state.set("OFF")
                 self.green_led_state.set("OFF")
                 self.blue_led_state.set("OFF")
 
             elif self.ledControl.get() == "I":
-                for i in range(10):
-                    # GPIO.output(led_red_pin, True)
-                    print("R On")
-                    time.sleep(0.1)
-                    print("R Off")
-                    # GPIO.output(led_red_pin, False)
-                    time.sleep(0.1)
-                    # GPIO.output(led_green_pin, True)
-                    print("G On")
-                    time.sleep(0.1)
-                    print("G Off")
-                    # GPIO.output(led_green_pin, False)
-                    time.sleep(0.1)
-                    # GPIO.output(led_blue_pin, True)
-                    print("B On")
-                    time.sleep(0.1)
-                    print("B Off")
-                    # GPIO.output(led_blue_pin, False)
-                    time.sleep(0.1)
+                GPIO.output(led_red_pin, True)
+                time.sleep(1)
+                GPIO.output(led_red_pin, False)
+                time.sleep(1)
+                GPIO.output(led_green_pin, True)
+                time.sleep(1)
+                GPIO.output(led_green_pin, False)
+                time.sleep(1)
+                GPIO.output(led_blue_pin, True)
+                time.sleep(1)
+                GPIO.output(led_blue_pin, False)
+                time.sleep(1)
 
         def led_control_window():
             newWindow = Toplevel(window)
@@ -91,6 +94,8 @@ class WidgetDemo:
             frame1.pack()
 
             self.led_state = IntVar()
+            self.led_state.set(1)
+            print("state init")
             self.red_led_state = StringVar()
             self.red_led_state.set("OFF")
             self.green_led_state = StringVar()
@@ -155,36 +160,36 @@ class WidgetDemo:
         window.mainloop()
 
     def process_radio_button(self):
-        print("LED ON" if self.led_state.get() == 1 else "LED OFF")
+        # print("LED ON" if self.led_state.get() == 0 else "LED OFF")
+        print("")
 
     def process_button(self):
-        print(self.ledColor.get() + " LED")
         if self.led_state.get() == 0:
             if self.ledColor.get() == "R":
-                # GPIO.output(led_red_pin, True)
+                GPIO.output(led_red_pin, True)
                 self.red_led_state.set("ON")
             elif self.ledColor.get() == "G":
-                # GPIO.output(led_green_pin, True)
+                GPIO.output(led_green_pin, True)
                 self.green_led_state.set("ON")
             elif self.ledColor.get() == "B":
-                # GPIO.output(led_blue_pin, True)
+                GPIO.output(led_blue_pin, True)
                 self.blue_led_state.set("ON")
 
         else:
             if self.ledColor.get() == "R":
                 self.red_led_state.set("OFF")
-                # GPIO.output(led_red_pin, False)
+                GPIO.output(led_red_pin, False)
             elif self.ledColor.get() == "G":
                 self.green_led_state.set("OFF")
-                # GPIO.output(led_green_pin, False)
+                GPIO.output(led_green_pin, False)
             elif self.ledColor.get() == "B":
                 self.blue_led_state.set("OFF")
-                # GPIO.output(led_blue_pin, False)
+                GPIO.output(led_blue_pin, False)
 
 
-WidgetDemo()
-
-# try:
-# WidgetDemo()
-# finally:
-# GPIO.cleanup()
+try:
+    WidgetDemo()
+except KeyboradInterrupt:
+    pass
+finally:
+    GPIO.cleanup()
