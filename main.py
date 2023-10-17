@@ -157,7 +157,10 @@ class WidgetDemo:
             newWindow = Toplevel(window)
             frame1 = Frame(newWindow)
             frame1.pack()
+            # button을 누르면, 라벨에 On/Off 변경값 표시함
             label1 = Label(frame1, text='구성한 버튼을 누르면 Buzzer가 켜집니다.')
+            # if GPIO.input(button_pin) == 0:
+            #     GPIO.output(buzzer_pin, True)
             label1.grid(row=0, column=0)
 
 
