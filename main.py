@@ -20,7 +20,7 @@ led_blue_pwm_pin = 13
 # GPIO.setup(led_red_pwm_pin, GPIO.OUT)
 # GPIO.setup(led_green_pwm_pin, GPIO.OUT)
 # GPIO.setup(led_blue_pwm_pin, GPIO.OUT)
-#
+
 # pwmRed = GPIO.PWM(led_red_pwm_pin, 500)
 # pwmGreen = GPIO.PWM(led_green_pwm_pin, 500)
 # pwmBlue = GPIO.PWM(led_blue_pwm_pin, 500)
