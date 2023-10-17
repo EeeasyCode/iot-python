@@ -2,9 +2,9 @@ import time
 import tkinter
 import tkinter.font
 from tkinter import *
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
+# GPIO.setmode(GPIO.BCM)
 
 led_red_pin = 16
 led_green_pin = 20
@@ -14,16 +14,16 @@ led_red_pwm_pin = 26
 led_green_pwm_pin = 19
 led_blue_pwm_pin = 13
 
-GPIO.setup(led_red_pin, GPIO.OUT)
-GPIO.setup(led_green_pin, GPIO.OUT)
-GPIO.setup(led_blue_pin, GPIO.OUT)
-GPIO.setup(led_red_pwm_pin, GPIO.OUT)
-GPIO.setup(led_green_pwm_pin, GPIO.OUT)
-GPIO.setup(led_blue_pwm_pin, GPIO.OUT)
-
-pwmRed = GPIO.PWM(led_red_pwm_pin, 500)
-pwmGreen = GPIO.PWM(led_green_pwm_pin, 500)
-pwmBlue = GPIO.PWM(led_blue_pwm_pin, 500)
+# GPIO.setup(led_red_pin, GPIO.OUT)
+# GPIO.setup(led_green_pin, GPIO.OUT)
+# GPIO.setup(led_blue_pin, GPIO.OUT)
+# GPIO.setup(led_red_pwm_pin, GPIO.OUT)
+# GPIO.setup(led_green_pwm_pin, GPIO.OUT)
+# GPIO.setup(led_blue_pwm_pin, GPIO.OUT)
+#
+# pwmRed = GPIO.PWM(led_red_pwm_pin, 500)
+# pwmGreen = GPIO.PWM(led_green_pwm_pin, 500)
+# pwmBlue = GPIO.PWM(led_blue_pwm_pin, 500)
 
 
 class WidgetDemo:
@@ -31,20 +31,20 @@ class WidgetDemo:
         def led_pwm_window():
             def set_pwm():
                 print("set")
-                pwmRed.start(0)
-                pwmGreen.start(0)
-                pwmBlue.start(0)
+                # pwmRed.start(0)
+                # pwmGreen.start(0)
+                # pwmBlue.start(0)
 
             def updateRed(duty):
-                pwmRed.ChangeDutyCycle(float(duty))
+                # pwmRed.ChangeDutyCycle(float(duty))
                 print(float(duty))
 
             def updateGreen(duty):
-                pwmGreen.ChangeDutyCycle(float(duty))
+                # pwmGreen.ChangeDutyCycle(float(duty))
                 print(float(duty))
 
             def updateBlue(duty):
-                pwmBlue.ChangeDutyCycle(float(duty))
+                # pwmBlue.ChangeDutyCycle(float(duty))
                 print(float(duty))
 
             if self.ledControl.get() == "M":
@@ -67,26 +67,27 @@ class WidgetDemo:
 
             elif self.ledControl.get() == "X":
                 print("X")
-                GPIO.output(led_red_pin, False)
-                GPIO.output(led_green_pin, False)
-                GPIO.output(led_blue_pin, False)
+                # GPIO.output(led_red_pin, False)
+                # GPIO.output(led_green_pin, False)
+                # GPIO.output(led_blue_pin, False)
                 self.red_led_state.set("OFF")
                 self.green_led_state.set("OFF")
                 self.blue_led_state.set("OFF")
 
             elif self.ledControl.get() == "I":
-                GPIO.output(led_red_pin, True)
-                time.sleep(1)
-                GPIO.output(led_red_pin, False)
-                time.sleep(1)
-                GPIO.output(led_green_pin, True)
-                time.sleep(1)
-                GPIO.output(led_green_pin, False)
-                time.sleep(1)
-                GPIO.output(led_blue_pin, True)
-                time.sleep(1)
-                GPIO.output(led_blue_pin, False)
-                time.sleep(1)
+                # GPIO.output(led_red_pin, True)
+                # time.sleep(1)
+                # GPIO.output(led_red_pin, False)
+                # time.sleep(1)
+                # GPIO.output(led_green_pin, True)
+                # time.sleep(1)
+                # GPIO.output(led_green_pin, False)
+                # time.sleep(1)
+                # GPIO.output(led_blue_pin, True)
+                # time.sleep(1)
+                # GPIO.output(led_blue_pin, False)
+                # time.sleep(1)
+                print("I")
 
         def led_control_window():
             newWindow = Toplevel(window)
@@ -152,9 +153,20 @@ class WidgetDemo:
             label6.grid(row=6, column=0)
             label7.grid(row=6, column=1)
 
+        def btn_control_window():
+            newWindow = Toplevel(window)
+            frame1 = Frame(newWindow)
+            frame1.pack()
+            label1 = Label(frame1, text='구성한 버튼을 누르면 Buzzer가 켜집니다.')
+            label1.grid(row=0, column=0)
+
+
         window = Tk()
         led_control_button = Button(window, text="LED Control", command=led_control_window)
+        btn_control_button = Button(window, text="Button Control", command=btn_control_window)
+
         led_control_button.pack()
+        btn_control_button.pack()
         window.title("위젯 데모")
 
         window.mainloop()
@@ -166,30 +178,32 @@ class WidgetDemo:
     def process_button(self):
         if self.led_state.get() == 0:
             if self.ledColor.get() == "R":
-                GPIO.output(led_red_pin, True)
+                # GPIO.output(led_red_pin, True)
                 self.red_led_state.set("ON")
             elif self.ledColor.get() == "G":
-                GPIO.output(led_green_pin, True)
+                # GPIO.output(led_green_pin, True)
                 self.green_led_state.set("ON")
             elif self.ledColor.get() == "B":
-                GPIO.output(led_blue_pin, True)
+                # GPIO.output(led_blue_pin, True)
                 self.blue_led_state.set("ON")
 
         else:
             if self.ledColor.get() == "R":
                 self.red_led_state.set("OFF")
-                GPIO.output(led_red_pin, False)
+                # GPIO.output(led_red_pin, False)
             elif self.ledColor.get() == "G":
                 self.green_led_state.set("OFF")
-                GPIO.output(led_green_pin, False)
+                # GPIO.output(led_green_pin, False)
             elif self.ledColor.get() == "B":
                 self.blue_led_state.set("OFF")
-                GPIO.output(led_blue_pin, False)
+                # GPIO.output(led_blue_pin, False)
 
 
-try:
-    WidgetDemo()
-except KeyboradInterrupt:
-    pass
-finally:
-    GPIO.cleanup()
+WidgetDemo()
+
+# try:
+#     WidgetDemo()
+# except KeyboradInterrupt:
+#     pass
+# finally:
+#     GPIO.cleanup()
